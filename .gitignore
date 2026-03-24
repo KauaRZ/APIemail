@@ -1,7 +1,4 @@
-
-API.csproj
 obj
-Properties
+bin
 appsettings.Development.json
 appsettings.json
-API.sln
