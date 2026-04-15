@@ -1,6 +1,12 @@
 using Microsoft.Extensions.Localization;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -17,10 +23,6 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/", () => "Rodando API!");
 
 app.MapGet("/usuarios", () => "Lista de usuários");
-app.MapPost("/usuarios", (string nome) =>
-{
-    return $"Usuario {nome} criado";
-});
 
 
 
