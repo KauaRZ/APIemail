@@ -17,4 +17,4 @@ Clone o repositório: git clone https://github.com/KauaRZ/NovaAPI.git Acesse a p
 
 Melhorias futuras: Implementar banco de dados Adicionar autenticação de usuários Criar validações de email Implementar atualização de dados (PUT) rodar API na nuvem
 
-Autor Kauã Rezende - Davi Ferreira
+Autor Kauã Rezende - Davi Ferreira - João Victor Rocha
