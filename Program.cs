@@ -43,6 +43,12 @@ app.MapPost("/register", async (AppDbContext db, AuthRequest request) =>
     return Results.Ok("Usuário criado");
 });
 
-
+app.MapPost("/esqueci-senha", (string email) =>
+{
+    return Results.Ok(new
+    {
+        mensagem = $"Se o email {email} existir, um link foi enviado."
+    });
+});
 
 app.Run();
