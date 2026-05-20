@@ -24,6 +24,12 @@ app.MapGet("/", () => "Rodando API!");
 
 app.MapGet("/usuarios", () => "Lista de usuários");
 
-
+app.MapPost("/esqueci-senha", (string email) =>
+{
+    return Results.Ok(new
+    {
+        mensagem = $"Se o email {email} existir, um link foi enviado."
+    });
+});
 
 app.Run();
