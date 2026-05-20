@@ -43,6 +43,30 @@ app.MapPost("/register", async (AppDbContext db, AuthRequest request) =>
     return Results.Ok("Usuário criado");
 });
 
+// Login
+        app.MapPost("/login", async (
+            AppDbContext db,
+            AuthRequest request) =>
+        {
+            var usuario = await db.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if(usuario == null)
+                return Results.BadRequest("Email ou senha inválidos");
+
+            var hasher = new PasswordHasher<User>();
+
+            var resultado = hasher.VerifyHashedPassword(
+                usuario,
+                usuario.PasswordHash,
+                request.Senha);
+
+            if(resultado == PasswordVerificationResult.Failed)
+                return Results.BadRequest("Email ou senha inválidos");
+
+            return Results.Ok("Login realizado");
+        });
+
 app.MapPost("/esqueci-senha", (string email) =>
 {
     return Results.Ok(new
