@@ -51,9 +51,15 @@ app.MapPost("/register", async (
 
     await repository.Criar(user);
 
-    return Results.Created(
-        $"/users/{user.Id}",
-        user);
+    var dadosSegurosDoUsuario = new APIemail.DTOs.UserResponseDTO
+{
+    Id = user.Id,
+    Email = user.Email
+};
+
+return Results.Created($"/users/{user.Id}", dadosSegurosDoUsuario);
+     
+       
 });
 
 
