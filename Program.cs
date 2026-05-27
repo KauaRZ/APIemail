@@ -1,5 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +18,70 @@ builder.Services.AddScoped<UserRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Digite: Bearer SEU_TOKEN"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+builder.Services.AddAuthentication(
+    JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters =
+        new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer =
+                builder.Configuration["Jwt:Issuer"],
+
+            ValidAudience =
+                builder.Configuration["Jwt:Audience"],
+
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(
+                        builder.Configuration["Jwt:Key"]))
+        };
+});
+
+builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
 
 
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.UseStaticFiles();
 
@@ -63,7 +127,8 @@ app.MapPost("/register", async (
 // Login
 app.MapPost("/login", async (
     UserRepository repository,
-    AuthRequest request)=>
+    AuthRequest request,
+    IConfiguration configuration)=>
 {
     var usuario=
     await repository.BuscarPorEmail(
@@ -82,11 +147,49 @@ app.MapPost("/login", async (
         request.Senha);
 
     if(resultado==
-    PasswordVerificationResult.Failed)
+        PasswordVerificationResult.Failed)
         return Results.Unauthorized();
 
-    return Results.Ok(
-        "Login realizado");
+    var claims = new[]
+    {
+        new Claim(
+            ClaimTypes.Email,
+            usuario.Email)
+    };
+
+    var key =
+        new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(
+                configuration["Jwt:Key"]));
+
+    var creds =
+        new SigningCredentials(
+            key,
+            SecurityAlgorithms.HmacSha256);
+
+    var token =
+        new JwtSecurityToken(
+            issuer:
+                configuration["Jwt:Issuer"],
+
+            audience:
+                configuration["Jwt:Audience"],
+
+            claims: claims,
+
+            expires:
+                DateTime.Now.AddHours(1),
+
+            signingCredentials: creds);
+
+    var tokenString =
+        new JwtSecurityTokenHandler()
+            .WriteToken(token);
+
+    return Results.Ok(new
+    {
+        token = tokenString
+    });
 });
 
 
@@ -134,7 +237,8 @@ ChangePasswordRequest request)=>
 
     return Results.Ok(
         "Senha alterada");
-});
+})
+.RequireAuthorization();
 
 
 // Deletar usuário
@@ -156,6 +260,7 @@ string email)=>
 
     return Results.Ok(
         "Usuário removido");
-});
+})
+.RequireAuthorization();
 
 app.Run();
