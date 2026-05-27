@@ -19,8 +19,11 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 
+    app.UseStaticFiles();
 
-app.MapGet("/", () => "API Rodando");
+   app.MapGet("/", () =>
+    Results.Redirect("/index.html"));
+
 
 
 // Criar usuário
