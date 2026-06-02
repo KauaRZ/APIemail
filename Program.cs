@@ -21,10 +21,10 @@ var app = builder.Build();
 
     app.UseStaticFiles();
 
-   app.MapGet("/", () =>
+    app.MapGet("/", () =>
     Results.Redirect("/index.html"));
 
-
+    app.UseHttpsRedirection();
 
 // Criar usuário
 app.MapPost("/register", async (
@@ -54,9 +54,16 @@ app.MapPost("/register", async (
 
     await repository.Criar(user);
 
+     var dadosSegurosDoUsuario = new APIemail.DTOs.UserResponseDTO
+    {
+        Id = user.Id,
+        Mensagem = "Usuário cadastrado com sucesso"
+    };
+
     return Results.Created(
         $"/users/{user.Id}",
-        user);
+        dadosSegurosDoUsuario);
+
 });
 
 
