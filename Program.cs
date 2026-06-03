@@ -31,6 +31,17 @@ app.MapPost("/register", async (
     UserRepository repository,
     AuthRequest request) =>
 {
+     if(string.IsNullOrWhiteSpace(request.Email))
+     {
+     return Results.BadRequest(
+        "Email é obrigatório");
+      }
+
+     if(string.IsNullOrWhiteSpace(request.Senha))
+     {
+      return Results.BadRequest(
+        "Senha é obrigatória");
+   }
 
     var existe = await repository.EmailExiste(
         request.Email);
@@ -65,6 +76,8 @@ app.MapPost("/register", async (
         dadosSegurosDoUsuario);
 
 });
+
+
 
 
 // Login
@@ -163,6 +176,22 @@ string email)=>
 
     return Results.Ok(
         "Usuário removido");
+});
+
+// Buscar cadastros para pagina de usuarios
+app.MapGet("/users", async (
+    AppDbContext db) =>
+{
+    var usuarios =
+        await db.Users
+            .Select(u => new
+            {
+                u.Email
+            })
+            .ToListAsync();
+
+    return Results.Ok(
+        usuarios);
 });
 
 app.Run();
