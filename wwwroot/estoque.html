@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Estoque</title>
+
+    <link rel="stylesheet"
+          href="/css/dashboard.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo-area">
+
+            <img src="/images/logo.png"
+                 class="logo">
+
+            <div class="empresa-info">
+
+                <h3>Oncoclínicas</h3>
+
+                <span>Sistema Interno</span>
+
+            </div>
+
+        </div>
+
+        <div class="menu">
+
+            <a href="/dashboard.html">
+                📊 Dashboard
+            </a>
+
+            <a href="/usuarios.html">
+                👥 Usuários
+            </a>
+
+            <a href="/produtos.html">
+                📋 Cadastro de Produtos
+            </a>
+
+            <a href="/estoque.html"
+               class="active">
+                📦 Estoque
+            </a>
+
+            <a href="/entrada-nota.html">
+                📥 Entrada de Notas
+            </a>
+
+            <a href="/saida-nota.html">
+                🚚 Saída de Notas
+            </a>
+
+            <a href="/relatorios.html">
+                📈 Relatórios
+            </a>
+
+        </div>
+
+        <div class="sidebar-footer">
+
+            <button onclick="logout()">
+                Sair
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="content">
+
+        <div class="topbar">
+
+            <h2>Controle de Estoque</h2>
+
+            <span id="dataAtual"></span>
+
+        </div>
+
+        <div class="card-form">
+
+            <h3>Pesquisa de Produtos</h3>
+
+            <br>
+
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Digite o código ou descrição do produto">
+
+        </div>
+
+        <div class="card-form">
+
+            <h3>Posição do Estoque</h3>
+
+            <br>
+
+            <table class="users-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Quantidade</th>
+                        <th>Estoque Mínimo</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td colspan="6"
+                            style="text-align:center;">
+
+                            Nenhum produto encontrado
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+
+</body>
+
+</html>
