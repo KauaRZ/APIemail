@@ -95,11 +95,13 @@
 
                 <h3>Dados do Produto</h3>
 
-                <button class="btn-edit">
+                <button
+                     class="btn-edit"
+                     onclick="salvarProduto()">
 
-                    Salvar Produto
+                     Salvar Produto
 
-                </button>
+                     </button>
 
             </div>
 
@@ -110,9 +112,10 @@
                     <label>Código</label>
 
                     <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Código do produto">
+                         id="codigo"
+                         type="text"
+                         class="form-control"
+                         placeholder="Código do produto">
 
                 </div>
 
@@ -121,17 +124,18 @@
                     <label>Descrição</label>
 
                     <input
+                        id="descricao"
                         type="text"
                         class="form-control"
                         placeholder="Descrição do produto">
-
                 </div>
 
                 <div class="form-group">
 
                     <label>Categoria</label>
 
-                    <select class="form-control">
+                    <select id="categoria"
+                      class="form-control">
 
                         <option>Selecione</option>
                         <option>Medicamentos</option>
@@ -148,7 +152,7 @@
 
                     <label>Unidade</label>
 
-                    <select class="form-control">
+                    <select  id="unidade" class="form-control">
 
                         <option>UN</option>
                         <option>CX</option>
@@ -165,9 +169,10 @@
                     <label>Fornecedor</label>
 
                     <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Fornecedor">
+                         id="fornecedor"
+                         type="text"
+                         class="form-control"
+                         placeholder="Fornecedor">
 
                 </div>
 
@@ -176,9 +181,10 @@
                     <label>Estoque Mínimo</label>
 
                     <input
-                        type="number"
-                        class="form-control"
-                        placeholder="Quantidade mínima">
+                         id="estoqueMinimo"
+                         type="number"
+                         class="form-control"
+                         placeholder="Quantidade mínima">
 
                 </div>
 
@@ -187,9 +193,10 @@
                     <label>Observações</label>
 
                     <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Informações adicionais">
+                         id="observacao"
+                         type="text"
+                         class="form-control"
+                         placeholder="Informações adicionais">
 
                 </div>
 
@@ -211,7 +218,8 @@
 
             </div>
 
-            <table class="users-table">
+            <table id="tabelaProdutos"
+            class="users-table">
 
                 <thead>
 
@@ -250,7 +258,10 @@
 
     </div>
 
+    <div id="toast" class="toast"></div>
+
     <script src="/js/dashboard.js"></script>
+    <script src="/js/produtos.js"></script>
 
 </body>
 

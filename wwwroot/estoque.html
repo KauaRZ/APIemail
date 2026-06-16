@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <title>Estoque</title>
+    <title>Controle de Estoque</title>
 
     <link rel="stylesheet"
           href="/css/dashboard.css">
@@ -17,6 +17,7 @@
 
 <body>
 
+    <!-- MENU LATERAL -->
     <div class="sidebar">
 
         <div class="logo-area">
@@ -54,11 +55,13 @@
             </a>
 
             <a href="/entrada-nota.html">
-                📥 Entrada de Notas
+                <i class="fa-solid fa-file-import"></i>
+                Entrada de Notas
             </a>
 
             <a href="/saida-nota.html">
-                🚚 Saída de Notas
+                <i class="fa-solid fa-file-export"></i>
+                Saída de Notas
             </a>
 
             <a href="/relatorios.html">
@@ -77,8 +80,10 @@
 
     </div>
 
+    <!-- CONTEÚDO -->
     <div class="content">
 
+        <!-- TOPO -->
         <div class="topbar">
 
             <h2>Controle de Estoque</h2>
@@ -87,36 +92,50 @@
 
         </div>
 
+        <!-- PESQUISA -->
         <div class="card-form">
 
-            <h3>Pesquisa de Produtos</h3>
+            <div class="page-header">
 
-            <br>
+                <h3>Pesquisa de Produtos</h3>
+
+            </div>
 
             <input
                 type="text"
+                id="pesquisa"
                 class="form-control"
                 placeholder="Digite o código ou descrição do produto">
 
         </div>
 
+        <!-- TABELA -->
         <div class="card-form">
 
-            <h3>Posição do Estoque</h3>
+            <div class="page-header">
 
-            <br>
+                <h3>Posição Atual do Estoque</h3>
 
-            <table class="users-table">
+            </div>
+
+            <table
+                id="tabelaEstoque"
+                class="users-table">
 
                 <thead>
 
                     <tr>
 
                         <th>Código</th>
+
                         <th>Descrição</th>
+
                         <th>Categoria</th>
+
                         <th>Quantidade</th>
+
                         <th>Estoque Mínimo</th>
+
                         <th>Status</th>
 
                     </tr>
@@ -130,7 +149,7 @@
                         <td colspan="6"
                             style="text-align:center;">
 
-                            Nenhum produto encontrado
+                            Carregando produtos...
 
                         </td>
 
@@ -145,6 +164,8 @@
     </div>
 
     <script src="/js/dashboard.js"></script>
+
+    <script src="/js/estoque.js"></script>
 
 </body>
 

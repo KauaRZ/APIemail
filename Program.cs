@@ -13,6 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
+builder.Services
+    .AddScoped<ProdutoRepository>();
+
 var app = builder.Build();
 
 
@@ -192,6 +195,83 @@ app.MapGet("/users", async (
 
     return Results.Ok(
         usuarios);
+});
+
+//rotina de cadastros produtos
+
+app.MapPost(
+"/produtos",
+async (
+ProdutoRepository repository,
+Produto produto) =>
+{
+    await repository.Criar(produto);
+
+    return Results.Ok(
+        "Produto cadastrado");
+});
+
+app.MapGet("/produtos", async (AppDbContext db) =>
+{
+    var produtos = await db.Produtos
+        .OrderByDescending(p => p.Id)
+        .Take(10)
+        .ToListAsync();
+
+    return Results.Ok(produtos);
+});
+
+app.MapPut(
+"/produtos/{id}",
+async (
+ProdutoRepository repository,
+int id,
+Produto dados) =>
+{
+    var produto =
+        await repository.BuscarPorId(id);
+
+    if(produto == null)
+        return Results.NotFound();
+
+    produto.Codigo =
+        dados.Codigo;
+
+    produto.Descricao =
+        dados.Descricao;
+
+    produto.Categoria =
+        dados.Categoria;
+
+    produto.Unidade =
+        dados.Unidade;
+
+    produto.Fornecedor =
+        dados.Fornecedor;
+
+    produto.EstoqueMinimo =
+        dados.EstoqueMinimo;
+
+    produto.Observacao =
+        dados.Observacao;
+
+    await repository.Atualizar();
+
+    return Results.Ok();
+});
+
+app.MapDelete("/produtos/{id}", async (int id, AppDbContext db) =>
+{
+    var produto = await db.Produtos.FindAsync(id);
+
+    if (produto == null)
+        return Results.NotFound();
+
+    db.Produtos.Remove(produto);
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok();
 });
 
 app.Run();
