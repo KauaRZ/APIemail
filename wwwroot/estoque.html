@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Controle de Estoque</title>
+
+    <link rel="stylesheet"
+          href="/css/dashboard.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- MENU LATERAL -->
+    <div class="sidebar">
+
+        <div class="logo-area">
+
+            <img src="/images/logo.png"
+                 class="logo">
+
+            <div class="empresa-info">
+
+                <h3>Oncoclínicas</h3>
+
+                <span>Sistema Interno</span>
+
+            </div>
+
+        </div>
+
+        <div class="menu">
+
+            <a href="/dashboard.html">
+                📊 Dashboard
+            </a>
+
+            <a href="/usuarios.html">
+                👥 Usuários
+            </a>
+
+            <a href="/produtos.html">
+                📋 Cadastro de Produtos
+            </a>
+
+            <a href="/estoque.html"
+               class="active">
+                📦 Estoque
+            </a>
+
+            <a href="/entrada-nota.html">
+                <i class="fa-solid fa-file-import"></i>
+                Entrada de Notas
+            </a>
+
+            <a href="/saida-nota.html">
+                <i class="fa-solid fa-file-export"></i>
+                Saída de Notas
+            </a>
+
+            <a href="/relatorios.html">
+                📈 Relatórios
+            </a>
+
+        </div>
+
+        <div class="sidebar-footer">
+
+            <button onclick="logout()">
+                Sair
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="content">
+
+        <!-- TOPO -->
+        <div class="topbar">
+
+            <h2>Controle de Estoque</h2>
+
+            <span id="dataAtual"></span>
+
+        </div>
+
+        <!-- PESQUISA -->
+        <div class="card-form">
+
+            <div class="page-header">
+
+                <h3>Pesquisa de Produtos</h3>
+
+            </div>
+
+            <input
+                type="text"
+                id="pesquisa"
+                class="form-control"
+                placeholder="Digite o código ou descrição do produto">
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="card-form">
+
+            <div class="page-header">
+
+                <h3>Posição Atual do Estoque</h3>
+
+            </div>
+
+            <table
+                id="tabelaEstoque"
+                class="users-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Código</th>
+
+                        <th>Descrição</th>
+
+                        <th>Categoria</th>
+
+                        <th>Quantidade</th>
+
+                        <th>Estoque Mínimo</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td colspan="6"
+                            style="text-align:center;">
+
+                            Carregando produtos...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+
+    <script src="/js/estoque.js"></script>
+
+</body>
+
+</html>

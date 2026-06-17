@@ -1,27 +1,54 @@
-async function login(){
-
+async function login()
+{
     const email =
         document.getElementById("email").value;
 
     const senha =
         document.getElementById("senha").value;
 
-    const response =
-        await fetch("/login",{
+    // Validação dos campos
+    if(!email || !senha)
+    {
+        alert("Preencha email e senha.");
 
-        method:"POST",
+        return;
+    }
 
-        headers:{
-            "Content-Type":"application/json"
-        },
+    try
+    {
+        const response =
+            await fetch("/login",
+            {
+                method:"POST",
 
-        body:JSON.stringify({
-            email,
-            senha
-        })
-    });
+                headers:
+                {
+                    "Content-Type":"application/json"
+                },
 
-    const data = await response.text();
+                body:JSON.stringify(
+                {
+                    email,
+                    senha
+                })
+            });
 
-    alert(data);
+        if(response.ok)
+        {
+            window.location.href =
+                "/dashboard.html";
+        }
+        else
+        {
+            alert(
+                "Email ou senha inválidos");
+        }
+    }
+    catch(error)
+    {
+        console.error(error);
+
+        alert(
+            "Erro ao conectar com a API.");
+    }
 }

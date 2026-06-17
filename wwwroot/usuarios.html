@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Usuários</title>
+
+    <link rel="stylesheet"
+          href="/css/dashboard.css">
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo-area">
+
+            <img src="/images/logo.png"
+                 class="logo">
+
+            <div class="empresa-info">
+
+                <h3>Oncoclínicas</h3>
+
+                <span>Sistema Interno</span>
+
+            </div>
+
+        </div>
+
+        <div class="menu">
+
+            <a href="/dashboard.html">
+                📊 Dashboard
+            </a>
+
+            <a href="/usuarios.html"
+               class="active">
+                👥 Usuários
+            </a>
+
+            <a href="produtos.html">
+                📋 Cadastro de produtos
+            </a>
+
+            <a href="estoque.html">
+                📦 Estoque
+            </a>
+
+            <a href="entrada-nota.html">
+                📥 Entrada de Notas
+            </a>
+
+            <a href="saida-nota.html">
+                🚚 Saída de Notas
+            </a>
+
+            <a href="relatorios.html">
+                📈 Relatórios
+            </a>
+
+        </div>
+
+        <div class="sidebar-footer">
+
+            <button onclick="logout()">
+                Sair
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="content">
+
+        <div class="page-header">
+
+            <h1>Usuários Cadastrados</h1>
+
+            <button
+             class="btn-edit"
+             onclick="novoUsuario()">
+
+             + Novo Usuário
+
+
+            </button>
+
+        </div>
+
+        <table
+            id="tabelaUsuarios"
+            class="users-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Email</th>
+
+                    <th>Ações</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- Modal Novo Usuário -->
+<div id="modalNovoUsuario" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Novo Usuário</h2>
+
+        <input
+            type="email"
+            id="novoEmail"
+            placeholder="Email">
+
+        <input
+            type="password"
+            id="novaSenha"
+            placeholder="Senha">
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-delete"
+                onclick="fecharModalNovoUsuario()">
+
+                Cancelar
+
+            </button>
+
+            <button
+                class="btn-edit"
+                onclick="salvarNovoUsuario()">
+
+                Salvar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal Alterar Senha -->
+<div id="modalAlterarSenha" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Alterar Senha</h2>
+
+        <p id="usuarioSelecionado"></p>
+
+        <input
+            type="password"
+            id="senhaAlterada"
+            placeholder="Nova senha">
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-delete"
+                onclick="fecharModalAlterarSenha()">
+
+                Cancelar
+
+            </button>
+
+            <button
+                class="btn-edit"
+                onclick="salvarNovaSenha()">
+
+                Salvar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal Exclusão -->
+<div id="modalExcluir" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Excluir Usuário</h2>
+
+        <p id="usuarioExcluir"></p>
+
+        <div class="modal-actions">
+
+            <button
+                class="btn-edit"
+                onclick="fecharModalExcluir()">
+
+                Cancelar
+
+            </button>
+
+            <button
+                class="btn-delete"
+                onclick="confirmarExclusao()">
+
+                Excluir
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/dashboard.js"></script>
+
+    <script src="/js/usuarios.js"></script>
+
+
+
+</body>
+
+</html>
