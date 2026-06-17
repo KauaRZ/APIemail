@@ -235,8 +235,7 @@ string email)=>
     {
         Existe=existe
     });
-})
-.RequireAuthorization();
+});
 
 
 // Alterar senha
@@ -266,8 +265,7 @@ ChangePasswordRequest request)=>
 
     return Results.Ok(
         "Senha alterada");
-})
-.RequireAuthorization();
+});
 
 
 // Deletar usuário
@@ -289,8 +287,7 @@ string email)=>
 
     return Results.Ok(
         "Usuário removido");
-})
-.RequireAuthorization();
+});
 
 // Buscar cadastros para pagina de usuarios
 app.MapGet("/users", async (
@@ -306,8 +303,7 @@ app.MapGet("/users", async (
 
     return Results.Ok(
         usuarios);
-})
-.RequireAuthorization();
+});
 
 //rotina de cadastros produtos
 
@@ -331,8 +327,7 @@ app.MapGet("/produtos", async (AppDbContext db) =>
         .ToListAsync();
 
     return Results.Ok(produtos);
-})
-.RequireAuthorization();
+});
 
 app.MapPut(
 "/produtos/{id}",
@@ -386,9 +381,7 @@ app.MapDelete("/produtos/{id}", async (int id, AppDbContext db) =>
     await db.SaveChangesAsync();
 
     return Results.Ok();
-})
-.RequireAuthorization();
-
+});
 
 
 
