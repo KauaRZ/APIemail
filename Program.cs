@@ -1,7 +1,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var jwtKey =
+    "MinhaChaveSuperSecretaERP2026JWTSegurancaOncoclinicas";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseSqlServer(
@@ -11,7 +22,62 @@ builder.Services.AddScoped<UserRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+builder.Services
+    .AddAuthentication(
+        JwtBearerDefaults.AuthenticationScheme)
+
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtKey))
+            };
+    });
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description =
+                "Informe o token JWT"
+        });
+
+    options.AddSecurityRequirement(
+        new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference =
+                        new OpenApiReference
+                        {
+                            Type =
+                                ReferenceType.SecurityScheme,
+
+                            Id = "Bearer"
+                        }
+                },
+                Array.Empty<string>()
+            }
+        });
+});
 
 builder.Services
     .AddScoped<ProdutoRepository>();
@@ -28,6 +94,10 @@ var app = builder.Build();
     Results.Redirect("/index.html"));
 
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
+
+    app.UseAuthorization();
 
 // Criar usuário
 app.MapPost("/register", async (
@@ -86,30 +156,65 @@ app.MapPost("/register", async (
 // Login
 app.MapPost("/login", async (
     UserRepository repository,
-    AuthRequest request)=>
+    AuthRequest request) =>
 {
-    var usuario=
-    await repository.BuscarPorEmail(
-        request.Email);
+    var usuario =
+        await repository.BuscarPorEmail(
+            request.Email);
 
-    if(usuario==null)
+    if (usuario == null)
         return Results.Unauthorized();
 
-    var hasher=
+    var hasher =
         new PasswordHasher<User>();
 
-    var resultado=
-    hasher.VerifyHashedPassword(
-        usuario,
-        usuario.PasswordHash,
-        request.Senha);
+    var resultado =
+        hasher.VerifyHashedPassword(
+            usuario,
+            usuario.PasswordHash,
+            request.Senha);
 
-    if(resultado==
-    PasswordVerificationResult.Failed)
+    if (resultado ==
+        PasswordVerificationResult.Failed)
         return Results.Unauthorized();
 
-    return Results.Ok(
-        "Login realizado");
+    var claims =
+        new List<Claim>
+    {
+        new Claim(
+            ClaimTypes.Name,
+            usuario.Email),
+
+        new Claim(
+            ClaimTypes.Email,
+            usuario.Email)
+    };
+
+    var key =
+        new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtKey));
+
+    var credenciais =
+        new SigningCredentials(
+            key,
+            SecurityAlgorithms.HmacSha256);
+
+    var token =
+        new JwtSecurityToken(
+            claims: claims,
+            expires:
+                DateTime.UtcNow.AddHours(2),
+            signingCredentials:
+                credenciais);
+
+    var tokenString =
+        new JwtSecurityTokenHandler()
+            .WriteToken(token);
+
+    return Results.Ok(new
+    {
+        Token = tokenString
+    });
 });
 
 
@@ -127,7 +232,8 @@ string email)=>
     {
         Existe=existe
     });
-});
+})
+.RequireAuthorization();
 
 
 // Alterar senha
@@ -157,7 +263,8 @@ ChangePasswordRequest request)=>
 
     return Results.Ok(
         "Senha alterada");
-});
+})
+.RequireAuthorization();
 
 
 // Deletar usuário
@@ -179,7 +286,8 @@ string email)=>
 
     return Results.Ok(
         "Usuário removido");
-});
+})
+.RequireAuthorization();
 
 // Buscar cadastros para pagina de usuarios
 app.MapGet("/users", async (
@@ -195,7 +303,8 @@ app.MapGet("/users", async (
 
     return Results.Ok(
         usuarios);
-});
+})
+.RequireAuthorization();
 
 //rotina de cadastros produtos
 
@@ -219,7 +328,8 @@ app.MapGet("/produtos", async (AppDbContext db) =>
         .ToListAsync();
 
     return Results.Ok(produtos);
-});
+})
+.RequireAuthorization();
 
 app.MapPut(
 "/produtos/{id}",
@@ -258,7 +368,8 @@ Produto dados) =>
     await repository.Atualizar();
 
     return Results.Ok();
-});
+})
+.RequireAuthorization();
 
 app.MapDelete("/produtos/{id}", async (int id, AppDbContext db) =>
 {
@@ -272,6 +383,7 @@ app.MapDelete("/produtos/{id}", async (int id, AppDbContext db) =>
     await db.SaveChangesAsync();
 
     return Results.Ok();
-});
+})
+.RequireAuthorization();
 
 app.Run();
