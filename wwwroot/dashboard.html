@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <title>Painel</title>
 
-    <link rel="stylesheet"
-          href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
 
-    <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
 
@@ -19,49 +17,48 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
         <div class="logo-area">
 
-            <img src="/images/logo.png"
-                 class="logo">
-     
-    <div class="empresa-info">
+            <img src="/images/logo.png" class="logo">
 
-        <h3>Oncoclínicas</h3>
+            <div class="empresa-info">
 
-        <span>Sistema Interno</span>
+                <h3>Oncoclínicas</h3>
 
-    </div>
+                <span>Sistema Interno</span>
+
+            </div>
 
         </div>
-        
+
 
         <div class="menu">
 
-           <a href="/dashboard.html"  class="active">📊 Dashboard</a>
+            <a href="/dashboard.html" class="active">📊 Dashboard</a>
 
-           <a href="/usuarios.html">👥 Usuários</a>
+            <a href="/usuarios.html">👥 Usuários</a>
 
-           <a href="/produtos.html">📋 Cadastro de produtos</a>
+            <a href="/produtos.html">📋 Cadastro de produtos</a>
 
-           <a href="/estoque.html">📦 Estoque</a>
+            <a href="/estoque.html">📦 Estoque</a>
 
-           <a href="/entrada-nota.html"><i class="fa-solid fa-file-import"></i>Entrada de Notas</a>
+            <a href="/entrada-nota.html"><i class="fa-solid fa-file-import"></i>Entrada de Notas</a>
 
-           <a href="/saida-nota.html"><i class="fa-solid fa-file-export"></i>Saída de Notas</a>
+            <a href="/solicitacoes.html"><i class="fa-solid fa-box-open"></i>Solicitações</a>
 
-           <a href="/relatorios.html">📈 Relatórios</a>
+            <a href="/relatorios.html">📈 Relatórios</a>
 
-</div>
+        </div>
 
-<div class="sidebar-footer">
+        <div class="sidebar-footer">
 
-    <button onclick="logout()">
-        Sair
-    </button>
+            <button onclick="logout()">
+                Sair
+            </button>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-    <div class="content">
+   <div class="content">
 
     <div class="topbar">
 
@@ -70,13 +67,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         <span id="dataAtual"></span>
 
     </div>
+
     <div class="banner">
 
-        <img
-            src="/images/empresa.jpg"
-            class="banner-img">
+        <img src="/images/empresa.jpg"
+             class="banner-img">
 
     </div>
+
+    <!-- CARDS -->
 
     <div class="cards">
 
@@ -86,7 +85,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
             <h3>Usuários</h3>
 
-            <p>7</p>
+            <p id="totalUsuarios">0</p>
 
         </div>
 
@@ -96,17 +95,17 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
             <h3>Entradas</h3>
 
-            <p>124</p>
+            <p id="totalEntradas">0</p>
 
         </div>
 
         <div class="card">
 
-            <i class="fa-solid fa-file-export"></i>
+            <i class="fa-solid fa-clipboard-list"></i>
 
-            <h3>Saídas</h3>
+            <h3>Solicitações</h3>
 
-            <p>12</p>
+            <p id="totalSolicitacoes">0</p>
 
         </div>
 
@@ -116,7 +115,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
             <h3>Estoque</h3>
 
-            <p>1178</p>
+            <p id="totalEstoque">0</p>
 
         </div>
 

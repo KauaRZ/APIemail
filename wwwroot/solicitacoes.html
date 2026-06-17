@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Solicitações de Materiais</title>
+
+    <link rel="stylesheet"
+          href="/css/dashboard.css">
+
+    <link rel="stylesheet"
+          href="/css/solicitacoes.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo-area">
+
+        <img src="/images/logo.png"
+             class="logo">
+
+        <div class="empresa-info">
+
+            <h3>Oncoclínicas</h3>
+
+            <span>Sistema Interno</span>
+
+        </div>
+
+    </div>
+
+    <div class="menu">
+
+        <a href="/dashboard.html">
+            📊 Dashboard
+        </a>
+
+        <a href="/usuarios.html">
+            👥 Usuários
+        </a>
+
+        <a href="/produtos.html">
+            📋 Cadastro de Produtos
+        </a>
+
+        <a href="/estoque.html">
+            📦 Estoque
+        </a>
+
+        <a href="/entrada-nota.html">
+            <i class="fa-solid fa-file-import"></i>
+             Entrada de Materiais
+        </a>
+
+        <a href="/solicitacoes.html"
+           class="active"> <i class="fa-solid fa-file-export"></i>
+
+             Solicitações
+
+        </a>
+
+        <a href="/relatorios.html">
+
+            📈 Relatórios
+
+        </a>
+
+    </div>
+
+    <div class="sidebar-footer">
+
+        <button onclick="logout()">
+
+            Sair
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="content">
+
+    <div class="topbar">
+
+        <h2>
+
+            Solicitações de Materiais
+
+        </h2>
+
+        <span id="dataAtual"></span>
+
+    </div>
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+
+                Histórico de Solicitações
+
+            </h2>
+
+            <span>
+
+                Consulte todas as solicitações realizadas pelos setores.
+
+            </span>
+
+        </div>
+
+        <button id="btnNovaSolicitacao"
+                class="btn-edit">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nova Solicitação
+
+        </button>
+
+    </div>
+
+    <div class="card-form">
+
+        <div class="form-group">
+
+            <label>
+
+                Pesquisar
+
+            </label>
+
+            <input
+                id="pesquisaSolicitacao"
+                class="form-control"
+                placeholder="Pesquisar por número, setor ou solicitante">
+
+        </div>
+
+    </div>
+
+    <div class="card-form">
+
+        <table
+            id="tabelaSolicitacoes"
+            class="users-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Nº</th>
+
+                    <th>Data</th>
+
+                    <th>Setor</th>
+
+                    <th>Solicitante</th>
+
+                    <th>Itens</th>
+
+                    <th>Status</th>
+
+                    <th>Ações</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td colspan="7"
+                        style="text-align:center">
+
+                        Nenhuma solicitação encontrada.
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div
+    id="modalSolicitacao"
+    class="modal">
+
+<div class="modal-content grande">
+
+    <div class="modal-header">
+
+        <h2>
+
+            Nova Solicitação
+
+        </h2>
+
+        <button
+            id="btnFecharModal">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+    </div>
+
+    <div class="modal-body">
+
+        <div class="card-form">
+
+            <h3>
+
+                Dados Gerais
+
+            </h3>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+
+                        Setor
+
+                    </label>
+
+                    <select
+                        id="setor"
+                        class="form-control">
+
+                        <option value="">Selecione</option>
+
+                        <option>Centro Cirúrgico</option>
+
+                        <option>Farmácia</option>
+
+                        <option>UTI</option>
+
+                        <option>Oncologia</option>
+
+                        <option>Recepção</option>
+
+                        <option>Laboratório</option>
+
+                        <option>Almoxarifado</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Solicitante
+
+                    </label>
+
+                    <input
+                        id="solicitante"
+                        class="form-control">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Centro de Custo
+
+                    </label>
+
+                    <input
+                        id="centroCusto"
+                        class="form-control">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Prioridade
+
+                    </label>
+
+                    <select
+                        id="prioridade"
+                        class="form-control">
+
+                        <option>Normal</option>
+
+                        <option>Urgente</option>
+
+                        <option>Emergência</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group"
+                     style="grid-column:1 / span 2">
+
+                    <label>
+
+                        Observação
+
+                    </label>
+
+                    <textarea
+                        id="observacao"
+                        class="form-control"
+                        rows="3"></textarea>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-form">
+
+            <h3>
+
+                Adicionar Itens
+
+            </h3>
+
+            <div class="form-grid">
+
+                <div class="form-group" style="position:relative;">
+
+                     <label>Produto</label>
+
+                     <input
+                        type="text"
+                        id="pesquisaProduto"
+                        class="form-control"
+                        placeholder="Digite o código ou nome do produto">
+
+                    <div
+                        id="listaProdutos"
+                        class="lista-produtos">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Estoque Atual
+
+                    </label>
+
+                    <input
+                        id="estoqueAtual"
+                        class="form-control"
+                        readonly>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Quantidade
+
+                    </label>
+
+                    <input
+                        id="quantidade"
+                        type="number"
+                        class="form-control">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>&nbsp;</label>
+
+                    <button
+                        id="btnAdicionarItem"
+                        class="btn-edit">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Adicionar Item
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+                        <table
+                id="tabelaItens"
+                class="users-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Código</th>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Estoque</th>
+                        <th>Quantidade</th>
+                        <th>Ações</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td colspan="6"
+                            style="text-align:center">
+
+                            Nenhum item adicionado.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button
+            id="btnCancelar"
+            class="btn-cancel">
+
+            Cancelar
+
+        </button>
+
+        <button
+            id="btnSalvarSolicitacao"
+            class="btn-edit">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            Salvar Solicitação
+
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<div id="modalVisualizar" class="modal">
+
+    <div class="modal-content grande">
+
+        <div id="modalVisualizarBody">
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Toast -->
+
+<div id="toast"
+     class="toast">
+
+</div>
+
+<!-- Loader -->
+
+<div id="loader"
+     class="loader-container">
+
+    <div class="loader"></div>
+
+    <span>
+
+        Processando...
+
+    </span>
+
+</div>
+
+<script src="/js/dashboard.js"></script>
+
+<script src="/js/solicitacoes.js"></script>
+
+</body>
+
+</html>
